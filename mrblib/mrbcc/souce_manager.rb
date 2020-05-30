@@ -26,4 +26,10 @@ class SourceManager
   def peek(i=1)
     return @@source_code[@pos]
   end
+
+  def self.error_at(pos, msg)
+    puts("#{@@source_code}\n")
+    puts(" " * (pos) + "^ " + msg)
+    raise msg
+  end
 end

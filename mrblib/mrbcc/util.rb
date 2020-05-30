@@ -10,6 +10,5 @@ def whitespace?(str)
 end
 
 def error(msg)
-  STDERR.puts(msg)
-  exit!
+  raise msg
 end

@@ -49,16 +49,17 @@ class Token
         next
       end
 
-      error("invalid token")
+      SourceManager.error_at(source_code.pos, "invalid token")
     end
 
-    cur = new_token(nil, TokenKind::EOF, cur)
+    cur = new_token(source_code.pos, TokenKind::EOF, cur)
     return head.next
   end
 
   def get_number
     if @kind != TokenKind::NUM
-      error("expected a number")
+      pos = @code_pos - 1
+      SourceManager.error_at(pos, "expected a number")
     end
     return @val
   end
