@@ -4,5 +4,6 @@ def __main__(argv)
   end
 
   source_code = SourceManager.new(argv[1])
-  CodeGenerator.run(source_code)
+  token = Tokenizer.run(source_code)
+  CodeGenerator.run(token)
 end

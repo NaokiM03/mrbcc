@@ -5,6 +5,10 @@ def int?(str)
   str.to_i.to_s == str.to_s
 end
 
+def whitespace?(str)
+  str == " "
+end
+
 def error(msg)
   STDERR.puts(msg)
   exit!
