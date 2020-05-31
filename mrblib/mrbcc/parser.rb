@@ -3,6 +3,10 @@ module NodeKind
   SUB = "SUB"             # -
   MUL = "MUL"             # *
   DIV = "DIV"             # /
+  EQ  = "EQ"              # ==
+  NE  = "NE"              # !=
+  LT  = "LT"              # <
+  LE  = "LE"              # <=
   NUM = "NUM"             # Integer
 end
 
@@ -83,7 +87,7 @@ class Node
       end
     end
   
-    def expr(tok)
+    def add(tok)
       node, rest = mul(tok)
   
       loop do
@@ -103,6 +107,68 @@ class Node
   
         return node, rest
       end
-    end  
+    end
+
+    def relational(tok)
+      node, tok = add(tok)
+  
+      loop do
+        if tok.equal("<")
+          tok = tok.next
+          rhs, tok = add(tok)
+          node = new_binary(NodeKind::LT, node, rhs)
+          next
+        end
+  
+        if tok.equal("<=")
+          tok = tok.next
+          rhs, tok = add(tok)
+          node = new_binary(NodeKind::LE, node, rhs)
+          next
+        end
+  
+        if tok.equal(">")
+          tok = tok.next
+          rhs, tok = add(tok)
+          node = new_binary(NodeKind::LT, rhs, node)
+          next
+        end
+  
+        if tok.equal(">=")
+          tok = tok.next
+          rhs, tok = add(tok)
+          node = new_binary(NodeKind::LE, rhs, node)
+          next
+        end
+  
+        return node, tok
+      end
+    end
+  
+    def equality(tok)
+      node, tok = relational(tok)
+  
+      loop do
+        if tok.equal("==")
+          tok = tok.next
+          rhs, tok = relational(tok)
+          node = new_binary(NodeKind::EQ, node, rhs)
+          next
+        end
+  
+        if tok.equal("!=")
+          tok = tok.next
+          rhs, tok = relational(tok)
+          node = new_binary(NodeKind::NE, node, rhs)
+          next
+        end
+  
+        return node, tok
+      end
+    end
+  
+    def expr(tok)
+      return equality(tok)
+    end
   end
 end

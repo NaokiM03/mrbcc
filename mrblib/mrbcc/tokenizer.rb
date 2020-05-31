@@ -59,6 +59,17 @@ class Token
           cur.len = source_code.pos - cur_tmp
           next
         end
+
+        if startswith(source_code.peek(2), "==") ||
+            startswith(source_code.peek(2), "!=") ||
+            startswith(source_code.peek(2), "<=") ||
+            startswith(source_code.peek(2), ">=")
+          cur = new_token(source_code.pos, TokenKind::RESERVED, cur)
+          cur.val = source_code.peek(2)
+          cur.len = 2
+          source_code.move_pos(2)
+          next
+        end
   
         if ispunct?(source_code.peek)
           cur = new_token(source_code.pos, TokenKind::RESERVED, cur)

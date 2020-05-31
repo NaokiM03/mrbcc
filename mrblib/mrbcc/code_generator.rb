@@ -42,6 +42,26 @@ class CodeGenerator
         puts("  idiv #{rs}\n")
         puts("  mov #{rd}, rax\n")
         return
+      when NodeKind::EQ
+        puts("  cmp #{rd}, #{rs}\n")
+        puts("  sete al\n")
+        puts("  movzb #{rd}, al\n")
+        return
+      when NodeKind::NE
+        puts("  cmp #{rd}, #{rs}\n")
+        puts("  setne al\n")
+        puts("  movzb #{rd}, al\n")
+        return
+      when NodeKind::LT
+        puts("  cmp #{rd}, #{rs}\n")
+        puts("  setl al\n")
+        puts("  movzb #{rd}, al\n")
+        return
+      when NodeKind::LE
+        puts("  cmp #{rd}, #{rs}\n")
+        puts("  setle al\n")
+        puts("  movzb #{rd}, al\n")
+        return
       else
         error("invalid expression")
       end

@@ -9,6 +9,11 @@ def whitespace?(str)
   str == " "
 end
 
+def startswith(p, q)
+  len = q.length
+  return p[0..len] == q
+end
+
 def ispunct?(c)
   [ "!", "\"", "#", "$", "%", "&", "'", "(", ")", # 0x21 ~ 0x29
     "*", "+", ",", "-", ".", "/",                 # 0x2a ~ 0x2f
