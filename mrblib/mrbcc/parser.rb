@@ -32,6 +32,22 @@ class Node
       return Node.new(NodeKind::NUM, nil, nil, val)
     end
 
+    def unary(tok)
+      if tok.equal("+")
+        tok = tok.next
+        return unary(tok)
+      end
+  
+      if tok.equal("-")
+        tok = tok.next
+        num_node = new_num(0)
+        node, rest = unary(tok)
+        return new_binary(NodeKind::SUB, num_node, node), rest
+      end
+  
+      return primary(tok)
+    end
+
     def primary(tok)
       if tok.equal("(")
         tok = tok.next
@@ -46,19 +62,19 @@ class Node
     end
   
     def mul(tok)
-      node, rest = primary(tok)
+      node, rest = unary(tok)
   
       loop do
         if rest.equal("*")
           rest = rest.next
-          rhs, rest = primary(rest)
+          rhs, rest = unary(rest)
           node = new_binary(NodeKind::MUL, node, rhs)
           next
         end
   
         if rest.equal("/")
           rest = rest.next
-          rhs, rest = primary(rest)
+          rhs, rest = unary(rest)
           node = new_binary(NodeKind::DIV, node, rhs)
           next
         end
