@@ -41,17 +41,17 @@ class Token
       cur.next = token
       return token
     end
-  
+
     def tokenize(source_code)
       head = Token.new
       cur = head
-  
+
       while source_code.exists_leftover
         if whitespace?(source_code.peek)
           source_code.move_pos
           next
         end
-  
+
         if int?(source_code.peek)
           cur = new_token(source_code.pos, TokenKind::NUM, cur)
           cur_tmp = source_code.pos
@@ -70,7 +70,7 @@ class Token
           source_code.move_pos(2)
           next
         end
-  
+
         if ispunct?(source_code.peek)
           cur = new_token(source_code.pos, TokenKind::RESERVED, cur)
           cur.len = 1
@@ -78,13 +78,13 @@ class Token
           source_code.move_pos
           next
         end
-  
+
         SourceManager.error_at(source_code.pos, "invalid token")
       end
-  
+
       cur = new_token(source_code.pos, TokenKind::EOF, cur)
       return head.next
-    end  
+    end
   end
 end
 
