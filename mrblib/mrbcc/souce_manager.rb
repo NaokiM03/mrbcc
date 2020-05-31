@@ -24,7 +24,7 @@ class SourceManager
   end
 
   def peek(i=1)
-    return @@source_code[@pos]
+    return @@source_code[@pos, i]
   end
 
   def self.error_at(pos, msg)
